@@ -3,4 +3,5 @@ Django==6.1.1
 django-unfold==0.108.0
 psycopg2-binary==2.9.13
 python-dotenv==1.2.3
+ruff==0.16.9
 sqlparse==0.6.0
