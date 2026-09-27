@@ -9,7 +9,7 @@ class Publisher(CommonModel):
         blank=True,
     )
 
-    founded_year = models.PositiveIntegerField(
+    founded_year = models.PositiveSmallIntegerField(
         blank=True,
         null=True,
     )

@@ -6,34 +6,34 @@ from games.models import Game
 
 @admin.register(Game)
 class GameAdmin(ModelAdmin):
-    list_display = [
+    list_display: list[str] = [
         "name",
         "publisher",
         "release_date",
         "rating",
     ]
 
-    search_fields = [
+    search_fields: list[str] = [
         "name",
         "description",
         "publisher__name",
     ]
 
-    list_filter = [
+    list_filter: list[str] = [
         "publisher",
         "genres",
         "release_date",
     ]
 
-    list_select_related = [
+    list_select_related: list[str] = [
         "publisher",
     ]
 
-    filter_horizontal = [
+    filter_horizontal: list[str] = [
         "genres",
     ]
 
-    readonly_fields = [
+    readonly_fields: list[str] = [
         "created_at",
         "updated_at",
     ]

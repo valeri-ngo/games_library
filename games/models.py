@@ -26,11 +26,11 @@ class Game(CommonModel):
         decimal_places=2,
         validators=[
             MinValueValidator(
-                0.0,
+                0,
                 message="Rating cannot be lower than 0.",
             ),
             MaxValueValidator(
-                10.0,
+                10,
                 message="Rating cannot be higher than 10",
             ),
         ],
