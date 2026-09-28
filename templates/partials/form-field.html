@@ -1,0 +1,50 @@
+{% load form_tags %}
+
+<div>
+    <label
+        for="{{ field.id_for_label }}"
+        class="mb-2 block text-sm font-medium text-slate-300"
+    >
+        {{ field.label }}
+
+        {% if field.field.required %}
+            <span class="text-rose-400">*</span>
+        {% endif %}
+    </label>
+
+    {% if field.name == "genres" %}
+        <div class="grid gap-2 rounded-xl border border-slate-700/80 bg-slate-950/70 p-3 sm:grid-cols-2">
+            {% for checkbox in field %}
+                <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-slate-800 px-3 py-2.5 text-sm text-slate-300 transition hover:border-cyan-400/50 hover:bg-slate-900">
+                    {{ checkbox.tag }}
+
+                    <span>
+                        {{ checkbox.choice_label }}
+                    </span>
+                </label>
+            {% empty %}
+                <p class="text-sm text-slate-500 sm:col-span-2">
+                    No genres exist yet. Create a genre before adding a game.
+                </p>
+            {% endfor %}
+        </div>
+    {% else %}
+        {{ field|add_class:"w-full rounded-xl border border-slate-700/80 bg-slate-950/80 px-3.5 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-600 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/10 disabled:cursor-not-allowed disabled:opacity-60" }}
+    {% endif %}
+
+    {% if field.help_text %}
+        <p class="mt-2 text-xs leading-5 text-slate-500">
+            {{ field.help_text }}
+        </p>
+    {% endif %}
+
+    {% if field.errors %}
+        <div class="mt-2 space-y-1">
+            {% for error in field.errors %}
+                <p class="text-sm font-medium text-rose-400">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

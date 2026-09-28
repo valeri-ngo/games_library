@@ -1,7 +1,9 @@
+from django.db.models import Prefetch
 from django.db.models.deletion import ProtectedError
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
+from games.models import Game
 from publishers.forms import PublisherForm
 from publishers.models import Publisher
 
@@ -39,7 +41,17 @@ def create_publisher(request: HttpRequest) -> HttpResponse:
 
 def publisher_details(request: HttpRequest, pk: int) -> HttpResponse:
     """Shows the publisher details by PK."""
-    publisher = get_object_or_404(Publisher, pk=pk)
+    publisher = get_object_or_404(
+        Publisher.objects.prefetch_related(
+            Prefetch(
+                "games",
+                queryset=Game.objects.select_related("publisher").prefetch_related(
+                    "genres"
+                ),
+            )
+        ),
+        pk=pk,
+    )
 
     context = {
         "publisher": publisher,

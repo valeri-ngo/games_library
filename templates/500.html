@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Server Error | Games Library
+{% endblock title %}
+
+{% block meta_description %}
+    An unexpected server error occurred.
+{% endblock meta_description %}
+
+{% block content %}
+    <section class="flex min-h-[58vh] items-center justify-center">
+        <div class="relative max-w-2xl overflow-hidden rounded-3xl border border-slate-800/80 bg-slate-900/50 px-8 py-14 text-center shadow-2xl shadow-slate-950/30 sm:px-16">
+            <div class="absolute top-0 left-1/2 h-32 w-64 -translate-x-1/2 rounded-full bg-rose-400/10 blur-3xl"></div>
+
+            <p class="relative text-6xl font-semibold tracking-[-0.06em] text-rose-300 sm:text-7xl">
+                500
+            </p>
+
+            <h1 class="relative mt-5 text-2xl font-semibold text-white sm:text-3xl">
+                Something went wrong
+            </h1>
+
+            <p class="relative mx-auto mt-4 max-w-lg text-sm leading-6 text-slate-400">
+                An unexpected error occurred while processing your request.
+                Please try again later.
+            </p>
+
+            <div class="relative mt-8 flex justify-center">
+                <a
+                    href="{% url 'common:home' %}"
+                    class="rounded-xl bg-cyan-300 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
+                >
+                    Return home
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -85,3 +85,19 @@ class GameForm(forms.ModelForm):
                 "invalid": "Please enter a valid URL.",
             },
         }
+
+
+class GameDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Game
+        fields = [
+            "name",
+            "publisher",
+            "genres",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.disabled = True

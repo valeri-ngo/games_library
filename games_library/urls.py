@@ -19,8 +19,12 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    path("", include("common.urls")),
     path("admin/", admin.site.urls),
     path("games/", include("games.urls")),
     path("publishers/", include("publishers.urls")),
     path("genres/", include("genres.urls")),
 ]
+
+handler404 = "common.views.custom_404"
+handler500 = "common.views.custom_500"

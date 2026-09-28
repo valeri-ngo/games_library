@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Delete {{ genre.name }} | Games Library
+{% endblock title %}
+
+{% block content %}
+    <section class="mx-auto max-w-2xl">
+        <p class="text-sm font-semibold tracking-[0.2em] text-rose-400 uppercase">
+            Genre management
+        </p>
+
+        <h1 class="mt-2 text-3xl font-semibold tracking-tight text-white">
+            Delete genre
+        </h1>
+
+        {% url "genres:genre-details" genre.pk as cancel_url %}
+
+        <div class="mt-8">
+            {% include "partials/delete-confirmation.html" with item_type="genre" object_name=genre.name warning="The genre will also be removed from all associated games." cancel_url=cancel_url %}
+        </div>
+    </section>
+{% endblock content %}

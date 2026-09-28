@@ -12,8 +12,8 @@ app_name = "genres"
 
 genre_urls = [
     path("", view=genre_details, name="genre-details"),
-    path("edit/", view=edit_genre, name="edit-genre"),
-    path("delete/", view=delete_genre, name="delete-genre"),
+    path("edit/", view=edit_genre, name="genre-edit"),
+    path("delete/", view=delete_genre, name="genre-delete"),
 ]
 
 urlpatterns = [

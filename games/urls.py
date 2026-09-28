@@ -6,8 +6,8 @@ app_name = "games"
 
 game_urls = [
     path("", view=game_details, name="game-details"),
-    path("edit/", view=edit_game, name="edit-game"),
-    path("delete/", view=delete_game, name="delete-game"),
+    path("edit/", view=edit_game, name="game-edit"),
+    path("delete/", view=delete_game, name="game-delete"),
 ]
 
 urlpatterns = [

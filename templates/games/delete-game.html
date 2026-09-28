@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Delete {{ game.name }} | Games Library
+{% endblock title %}
+
+{% block content %}
+    <section class="mx-auto max-w-2xl">
+        <p class="text-sm font-semibold tracking-[0.2em] text-rose-400 uppercase">
+            Game management
+        </p>
+
+        <h1 class="mt-2 text-3xl font-semibold tracking-tight text-white">
+            Delete game
+        </h1>
+
+        {% url "games:game-details" game.pk as cancel_url %}
+
+        <div class="mt-8">
+            {% include "partials/delete-confirmation.html" with item_type="game" object_name=game.name warning="This action cannot be undone." cancel_url=cancel_url %}
+        </div>
+    </section>
+{% endblock content %}

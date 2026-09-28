@@ -1,6 +1,8 @@
+from django.db.models import Prefetch
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
+from games.models import Game
 from genres.forms import GenreForm
 from genres.models import Genre
 
@@ -38,7 +40,17 @@ def create_genre(request: HttpRequest) -> HttpResponse:
 
 def genre_details(request: HttpRequest, pk: int) -> HttpResponse:
     """Game genre details by PK."""
-    genre = get_object_or_404(Genre.objects.prefetch_related("games"), pk=pk)
+    genre = get_object_or_404(
+        Genre.objects.prefetch_related(
+            Prefetch(
+                "games",
+                queryset=Game.objects.select_related("publisher").prefetch_related(
+                    "genres"
+                ),
+            )
+        ),
+        pk=pk,
+    )
 
     context = {
         "genre": genre,

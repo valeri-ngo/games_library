@@ -69,18 +69,3 @@ class PublisherForm(forms.ModelForm):
                 "invalid": "Please enter a valid URL.",
             },
         }
-
-    def clean_founded_year(self):
-        founded_year = self.cleaned_data.get("founded_year")
-        current_year = timezone.localdate().year
-
-        if founded_year is None:
-            return founded_year
-
-        if founded_year < 1800:
-            raise forms.ValidationError("Founded year cannot be earlier than 1800.")
-
-        if founded_year > current_year:
-            raise forms.ValidationError("Founded year cannot be in the future.")
-
-        return founded_year
