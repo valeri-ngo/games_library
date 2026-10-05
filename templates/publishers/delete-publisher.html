@@ -1,21 +1,20 @@
 {% extends "base.html" %}
-
 {% block title %}
     Delete {{ publisher.name }} | Games Library
 {% endblock title %}
-
+{% block meta_description %}
+    Delete {{ publisher.name }} from the Games Library.
+{% endblock meta_description %}
 {% block content %}
-    <section class="mx-auto max-w-2xl">
-        <p class="text-sm font-semibold tracking-[0.2em] text-rose-400 uppercase">
-            Publisher management
-        </p>
-
-        <h1 class="mt-2 text-3xl font-semibold tracking-tight text-white">
-            Delete publisher
-        </h1>
-
+    <!-- MAIN SECTION -->
+    <section class="mx-auto max-w-2xl px-6 py-10 sm:px-8">
+        <!-- HEADER -->
+        <div>
+            <p class="text-sm font-semibold tracking-[0.2em] text-rose-400 uppercase">Publisher management</p>
+            <h1 class="mt-2 text-3xl font-semibold tracking-tight text-white">Delete publisher</h1>
+        </div>
+        <!-- CONFIRMATION -->
         {% url "publishers:publisher-details" publisher.pk as cancel_url %}
-
         <div class="mt-8">
             {% include "partials/delete-confirmation.html" with item_type="publisher" object_name=publisher.name warning="Publishers with associated games are protected and cannot be deleted." cancel_url=cancel_url deletion_error=deletion_error %}
         </div>

@@ -1,0 +1,24 @@
+<!-- DASHBOARD HEADER -->
+<header class="border-b border-white/10 bg-slate-950/30 backdrop-blur-md">
+   <div class="mx-auto flex max-w-[98rem] flex-wrap items-center justify-between gap-4 px-6 py-4 sm:px-10">
+      <!-- LOGO -->
+      <a href="{% url "common:home" %}"
+         class="text-xl font-bold tracking-tight text-white uppercase">
+         GAMES <span class="text-cyan-400">Library</span>
+      </a>
+      <!-- NAVIGATION -->
+      <nav class="flex items-center gap-5 text-sm font-semibold text-slate-300">
+         <a href="{% url "games:games-list" %}"
+            class="transition hover:text-cyan-400">Games</a>
+         <a href="{% url "genres:genres-list" %}"
+            class="transition hover:text-cyan-400">Genres</a>
+         <a href="{% url "publishers:publishers-list" %}"
+            class="transition hover:text-cyan-400">Publishers</a>
+      </nav>
+      <!-- ADD GAME -->
+      <a href="{% url "games:game-create" %}"
+         class="rounded-lg border border-cyan-400 px-4 py-2 font-semibold text-cyan-400 transition hover:bg-cyan-400 hover:text-slate-950">
+         + Add Game
+      </a>
+   </div>
+</header>

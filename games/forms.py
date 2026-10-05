@@ -59,7 +59,7 @@ class GameForm(forms.ModelForm):
         }
 
         help_texts = {
-            "genres": "Select one or more genres.",
+            "genres": "Select genres for the game (optional).",
             "rating": "Enter a rating between 0 and 10.",
             "cover_url": "Enter a direct URL to the game cover.",
         }
@@ -68,12 +68,6 @@ class GameForm(forms.ModelForm):
             "name": {
                 "required": "Please enter the game title.",
                 "unique": "A game with this title already exists.",
-            },
-            "publisher": {
-                "required": "Please select a publisher.",
-            },
-            "genres": {
-                "required": "Please select at least one genre.",
             },
             "release_date": {
                 "invalid": "Please enter a valid release date.",

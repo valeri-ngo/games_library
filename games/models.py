@@ -9,11 +9,14 @@ class Game(CommonModel):
         "publishers.Publisher",
         on_delete=models.PROTECT,
         related_name="games",
+        blank=True,
+        null=True,
     )
 
     genres = models.ManyToManyField(
         "genres.Genre",
         related_name="games",
+        blank=True,
     )
 
     release_date = models.DateField(

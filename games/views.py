@@ -16,8 +16,8 @@ def games_list(request: HttpRequest) -> HttpResponse:
     )
 
     search_query = request.GET.get("q", "").strip()
-    selected_genre = request.GET.get("genre", "")
-    selected_publisher = request.GET.get("publisher", "")
+    selected_genres = request.GET.getlist("genre")
+    selected_publishers = request.GET.getlist("publisher")
     selected_sort = request.GET.get("sort", "name")
 
     if search_query:
@@ -25,11 +25,11 @@ def games_list(request: HttpRequest) -> HttpResponse:
             Q(name__icontains=search_query) | Q(description__icontains=search_query)
         )
 
-    if selected_genre.isdigit():
-        games_list = games_list.filter(genres__pk=int(selected_genre))
+    if selected_genres:
+        games_list = games_list.filter(genres__pk__in=selected_genres)
 
-    if selected_publisher.isdigit():
-        games_list = games_list.filter(publisher__pk=int(selected_publisher))
+    if selected_publishers:
+        games_list = games_list.filter(publisher__pk__in=selected_publishers)
 
     allowed_sorting = {
         "name": "name",
@@ -49,8 +49,8 @@ def games_list(request: HttpRequest) -> HttpResponse:
         "genres": Genre.objects.all(),
         "publishers": Publisher.objects.all(),
         "search_query": search_query,
-        "selected_genre": selected_genre,
-        "selected_publisher": selected_publisher,
+        "selected_genres": selected_genres,
+        "selected_publishers": selected_publishers,
         "selected_sort": selected_sort,
     }
 

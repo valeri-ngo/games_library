@@ -1,300 +1,126 @@
 {% extends "base.html" %}
-{% load static %}
-
 {% block title %}
-    Games Library | Your personal collection
+    Games Library
 {% endblock title %}
-
 {% block meta_description %}
-    Organize and explore your personal collection of games, genres and publishers.
+    Personal games library.
 {% endblock meta_description %}
-
+{% block header %}
+{% endblock header %}
 {% block content %}
-    {# HERO #}
-    <section class="relative isolate overflow-hidden rounded-3xl border border-white/10 bg-slate-900 shadow-2xl shadow-slate-950/40">
-        <img
-            src="{% static 'images/games-library-hero.png' %}"
-            alt=""
-            class="absolute inset-0 h-full w-full object-cover object-center opacity-45"
-        />
-
-        <div class="absolute inset-0 bg-linear-to-r from-slate-950 via-slate-950/90 to-slate-950/25"></div>
-        <div class="absolute inset-0 bg-linear-to-t from-slate-950/80 via-transparent to-transparent"></div>
-        <div class="absolute -top-32 -left-28 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl"></div>
-
-        <div class="relative z-10 grid min-h-108 lg:grid-cols-[1fr_18rem]">
-            <div class="flex flex-col justify-between px-7 py-9 sm:px-10 sm:py-11 lg:px-12">
-                <span class="inline-flex w-fit items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1.5 text-[11px] font-semibold tracking-[0.16em] text-cyan-300 uppercase backdrop-blur">
-                    <span class="h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_10px_#67e8f9]"></span>
-                    Personal game archive
-                </span>
-
-                <div class="mt-16 max-w-2xl">
-                    <h1 class="max-w-xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl lg:text-[3.5rem] lg:leading-[1.04]">
-                        Games worth playing.
-                        <span class="block text-cyan-300">Stories worth keeping.</span>
-                    </h1>
-
-                    <p class="mt-5 max-w-xl text-base leading-7 text-slate-300">
-                        Keep the titles you enjoy, the genres that define them and the
-                        publishers behind them in one focused collection.
-                    </p>
-
-                    <div class="mt-7 flex flex-wrap gap-3">
-                        <a
-                            href="{% url 'games:games-list' %}"
-                            class="group inline-flex items-center gap-2 rounded-xl bg-cyan-300 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
-                        >
-                            Browse library
-                            <span class="transition-transform group-hover:translate-x-1">→</span>
-                        </a>
-
-                        <a
-                            href="{% url 'games:game-create' %}"
-                            class="inline-flex items-center rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur transition hover:border-white/30 hover:bg-white/10"
-                        >
-                            Add a game
-                        </a>
-                    </div>
-                </div>
+    <!-- HERO -->
+    <section class="mx-auto grid min-h-screen w-full max-w-[98rem] grid-cols-1 items-center gap-6 sm:px-16 sm:py-4 lg:grid-cols-2">
+        <!-- LEFT SIDE -->
+        <div class="mx-4 sm:mx-10 sm:pl-20">
+            <div class="my-4 flex w-full items-center space-x-10">
+                <span class="mx-5 h-1 w-8 rounded-2xl bg-cyan-400"></span>
+                <p class="text-xs font-semibold tracking-wider text-slate-400 uppercase sm:text-lg">Your games, your way</p>
             </div>
-
-            {# DESKTOP OVERVIEW #}
-            <aside class="hidden border-l border-white/10 bg-slate-950/40 p-7 backdrop-blur-sm lg:flex lg:flex-col lg:justify-between">
-                <p class="text-[10px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
-                    Collection overview
-                </p>
-
-                <div class="divide-y divide-white/10">
-                    <a
-                        href="{% url 'games:games-list' %}"
-                        class="group flex items-end justify-between py-5 first:pt-0"
-                    >
-                        <div>
-                            <p class="text-xs text-slate-500">Games</p>
-                            <p class="mt-1 text-3xl font-semibold text-white">{{ games_count }}</p>
-                        </div>
-
-                        <span class="text-slate-600 transition group-hover:translate-x-1 group-hover:text-cyan-300">
-                            →
-                        </span>
-                    </a>
-
-                    <a
-                        href="{% url 'genres:genres-list' %}"
-                        class="group flex items-end justify-between py-5"
-                    >
-                        <div>
-                            <p class="text-xs text-slate-500">Genres</p>
-                            <p class="mt-1 text-3xl font-semibold text-white">{{ genres_count }}</p>
-                        </div>
-
-                        <span class="text-slate-600 transition group-hover:translate-x-1 group-hover:text-cyan-300">
-                            →
-                        </span>
-                    </a>
-
-                    <a
-                        href="{% url 'publishers:publishers-list' %}"
-                        class="group flex items-end justify-between py-5 last:pb-0"
-                    >
-                        <div>
-                            <p class="text-xs text-slate-500">Publishers</p>
-                            <p class="mt-1 text-3xl font-semibold text-white">{{ publishers_count }}</p>
-                        </div>
-
-                        <span class="text-slate-600 transition group-hover:translate-x-1 group-hover:text-cyan-300">
-                            →
-                        </span>
-                    </a>
-                </div>
-
-                <p class="text-xs leading-5 text-slate-600">
-                    Curated by you.
-                    <br />
-                    Organized your way.
-                </p>
-            </aside>
-        </div>
-    </section>
-
-    {# MOBILE OVERVIEW #}
-    <section
-        aria-label="Library statistics"
-        class="mt-3 grid grid-cols-3 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/70 lg:hidden"
-    >
-        <a
-            href="{% url 'games:games-list' %}"
-            class="p-4 transition hover:bg-white/5"
-        >
-            <p class="text-xl font-semibold text-white">{{ games_count }}</p>
-            <p class="mt-1 text-[11px] text-slate-500">Games</p>
-        </a>
-
-        <a
-            href="{% url 'genres:genres-list' %}"
-            class="border-x border-slate-800 p-4 transition hover:bg-white/5"
-        >
-            <p class="text-xl font-semibold text-white">{{ genres_count }}</p>
-            <p class="mt-1 text-[11px] text-slate-500">Genres</p>
-        </a>
-
-        <a
-            href="{% url 'publishers:publishers-list' %}"
-            class="p-4 transition hover:bg-white/5"
-        >
-            <p class="text-xl font-semibold text-white">{{ publishers_count }}</p>
-            <p class="mt-1 text-[11px] text-slate-500">Publishers</p>
-        </a>
-    </section>
-
-    {# LATEST GAMES #}
-    <section class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-5">
-            <div>
-                <div class="flex items-center gap-3">
-                    <span class="h-px w-7 bg-cyan-400"></span>
-                    <p class="text-[11px] font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-                        Recently added
-                    </p>
-                </div>
-
-                <h2 class="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                    Latest games
-                </h2>
-
-                <p class="mt-2 text-sm text-slate-500">
-                    The newest titles in your collection.
-                </p>
-            </div>
-
-            {% if latest_games %}
-                <a
-                    href="{% url 'games:games-list' %}"
-                    class="group inline-flex items-center gap-2 text-sm font-medium text-slate-400 transition hover:text-cyan-300"
-                >
-                    Browse all games
-                    <span class="transition-transform group-hover:translate-x-1">→</span>
+            <h1 class="mx-5 text-3xl leading-[0.80] font-extrabold tracking-tighter uppercase sm:text-7xl">
+                <span class="block text-white">Personal</span>
+                <span class="block text-cyan-400">games library</span>
+            </h1>
+            <p class="mx-5 mt-2 max-w-md text-base leading-4 tracking-tighter text-slate-400 sm:text-2xl sm:leading-6">
+                Keep your games, genres and publishers organized in one place.
+                Track your collection, discover new titles and never lose sight
+                of what you love to play.
+            </p>
+            <!-- BUTTONS -->
+            <div class="mx-5 my-4 flex flex-col gap-4 sm:flex-row">
+                <!-- BUTTON BROWSE -->
+                <a href="{% url 'games:games-list' %}"
+                   class="rounded-xl bg-cyan-400 px-6 py-4 text-center font-semibold text-slate-800 shadow-[0_0_25px_rgba(34,211,238,0.45)] transition-colors hover:bg-cyan-300">
+                    🕮 Browse Collection ⇀
                 </a>
-            {% endif %}
+                <!-- BUTTON ADD -->
+                <a href="{% url 'games:game-create' %}"
+                   class="rounded-xl border-2 border-cyan-400 bg-slate-900 px-6 py-4 text-center font-semibold text-gray-300 transition-colors hover:bg-cyan-400 hover:text-slate-900">
+                    + Add Game
+                </a>
+            </div>
         </div>
-
-        {% if latest_games %}
-            <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- RIGHT SIDE -->
+        <div class="mx-4 sm:mx-10 sm:pr-20">
+            <!-- HEADER LEFT SIDE -->
+            <div class="mx-4 mb-4 flex items-center sm:mx-2">
+                <span class="mr-4 h-1 w-8 rounded-2xl bg-cyan-400"></span>
+                <p class="text-xs font-semibold tracking-wider text-cyan-400 uppercase sm:text-lg">Recently added</p>
+            </div>
+            <!-- HEADER RIGHT SIDE -->
+            <div class="flex items-center justify-between">
+                <h2 class="ml-10 text-2xl font-bold tracking-tighter text-white sm:ml-2 sm:text-4xl">Latest games</h2>
+                <a href="{% url 'games:games-list' %}"
+                   class="mr-6 text-base text-slate-400 hover:text-cyan-400 sm:text-xl">View all ⇀</a>
+            </div>
+            <!-- GAME CARDS -->
+            <div class="relative mt-4 h-150 w-full">
                 {% for game in latest_games %}
-                    {% include "partials/game-card.html" with game=game %}
+                    <!-- CENTER CARD -->
+                    {% if forloop.counter == 1 %}
+                        <article class="absolute top-5 left-1/2 z-20 h-100 w-30 -translate-x-1/2 overflow-hidden rounded-md border-2 border-cyan-400 transition-all duration-300 aspect-3/4 hover:z-30 hover:scale-110 hover:shadow-[0_0_15px_rgba(34,211,238,1),0_0_35px_rgba(34,211,238,0.8)] sm:w-80">
+                            <a href="{% url 'games:game-details' game.pk %}">
+                                {% if game.cover_url %}
+                                    <img src="{{ game.cover_url }}"
+                                         alt="{{ game.name }}"
+                                         class="h-full w-full object-cover brightness-75 hover:brightness-100">
+                                {% else %}
+                                    <div class="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-800 to-slate-950">
+                                        <div class="text-center">
+                                            <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-slate-700 bg-slate-800 font-bold text-cyan-400">
+                                                GL
+                                            </span>
+                                            <p class="mt-3 text-xs font-medium tracking-widest text-slate-500 uppercase">No cover</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </a>
+                        </article>
+                        <!-- LEFT CARD -->
+                    {% elif forloop.counter == 2 %}
+                        <article class="absolute top-5 left-1/2 z-10 h-100 w-30 origin-bottom-left translate-x-[-95%] -rotate-10 transform overflow-hidden rounded-md border-2 border-cyan-400 shadow-lg transition-all duration-300 aspect-3/4 hover:z-30 hover:origin-bottom-right hover:scale-110 hover:rotate-none hover:shadow-[0_0_15px_rgba(34,211,238,1),0_0_35px_rgba(34,211,238,0.8)] sm:top-16 sm:w-80">
+                            <a href="{% url 'games:game-details' game.pk %}">
+                                {% if game.cover_url %}
+                                    <img src="{{ game.cover_url }}"
+                                         alt="{{ game.name }}"
+                                         class="h-full w-full object-cover brightness-50 transition-all duration-300 hover:brightness-100">
+                                {% else %}
+                                    <div class="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-800 to-slate-950">
+                                        <div class="text-center">
+                                            <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-slate-700 bg-slate-800 font-bold text-cyan-400">
+                                                GL
+                                            </span>
+                                            <p class="mt-3 text-xs font-medium tracking-widest text-slate-500 uppercase">No cover</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </a>
+                        </article>
+                        <!-- RIGHT CARD -->
+                    {% elif forloop.counter == 3 %}
+                        <article class="absolute top-9 left-1/2 z-10 h-100 w-30 origin-bottom-right translate-x-[-5%] rotate-10 transform overflow-hidden rounded-md border-2 border-cyan-400 shadow-lg transition-all duration-300 aspect-3/4 hover:z-30 hover:origin-bottom-left hover:scale-110 hover:rotate-none hover:shadow-[0_0_15px_rgba(34,211,238,1),0_0_35px_rgba(34,211,238,0.8)] sm:top-16 sm:w-80">
+                            <a href="{% url 'games:game-details' game.pk %}">
+                                {% if game.cover_url %}
+                                    <img src="{{ game.cover_url }}"
+                                         alt="{{ game.name }}"
+                                         class="h-full w-full object-cover brightness-50 transition-all duration-300 hover:brightness-100">
+                                {% else %}
+                                    <div class="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-800 to-slate-950">
+                                        <div class="text-center">
+                                            <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-slate-700 bg-slate-800 font-bold text-cyan-400">
+                                                GL
+                                            </span>
+                                            <p class="mt-3 text-xs font-medium tracking-widest text-slate-500 uppercase">No cover</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </a>
+                        </article>
+                    {% endif %}
+                {% empty %}
+                    <div class="flex h-full items-center justify-center">
+                        <p class="text-sm text-slate-500">No games added yet.</p>
+                    </div>
                 {% endfor %}
-            </div>
-        {% else %}
-            <div class="relative mt-8 overflow-hidden rounded-2xl border border-dashed border-slate-700 bg-slate-900/50 px-6 py-12 text-center">
-                <div class="absolute top-0 left-1/2 h-24 w-56 -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl"></div>
-
-                <div class="relative mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-slate-700 bg-slate-800 text-lg text-cyan-300">
-                    +
-                </div>
-
-                <h3 class="relative mt-5 text-xl font-semibold text-white">
-                    Start your collection
-                </h3>
-
-                <p class="relative mx-auto mt-2 max-w-md text-sm leading-6 text-slate-400">
-                    Create a genre and a publisher, then add the first game to your library.
-                </p>
-
-                <div class="relative mt-6 flex flex-wrap justify-center gap-3">
-                    <a
-                        href="{% url 'genres:genre-create' %}"
-                        class="rounded-xl border border-slate-700 px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:border-cyan-400/50 hover:text-cyan-300"
-                    >
-                        Create genre
-                    </a>
-
-                    <a
-                        href="{% url 'publishers:publisher-create' %}"
-                        class="rounded-xl border border-slate-700 px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:border-cyan-400/50 hover:text-cyan-300"
-                    >
-                        Create publisher
-                    </a>
-                </div>
-            </div>
-        {% endif %}
-    </section>
-
-    {# LIBRARY AREAS #}
-    <section class="mt-16 border-t border-slate-800 pt-10">
-        <div class="grid gap-8 lg:grid-cols-[0.6fr_1.4fr] lg:items-start">
-            <div>
-                <p class="text-[11px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
-                    Explore the archive
-                </p>
-
-                <h2 class="mt-3 text-2xl font-semibold tracking-tight text-white">
-                    One connected collection.
-                </h2>
-
-                <p class="mt-3 max-w-sm text-sm leading-6 text-slate-500">
-                    Every game connects to the genres that shape it and the publisher behind
-                    it.
-                </p>
-            </div>
-
-            <div class="grid overflow-hidden rounded-2xl border border-slate-800 bg-slate-800 sm:grid-cols-3 sm:gap-px">
-                <a
-                    href="{% url 'games:games-list' %}"
-                    class="group bg-slate-950 p-5 transition hover:bg-slate-900"
-                >
-                    <span class="text-[10px] font-semibold tracking-widest text-cyan-400">
-                        01
-                    </span>
-
-                    <h3 class="mt-5 font-semibold text-white">Games</h3>
-
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
-                        Search, filter and manage every title.
-                    </p>
-
-                    <span class="mt-5 inline-block text-sm text-slate-600 transition group-hover:translate-x-1 group-hover:text-cyan-300">
-                        →
-                    </span>
-                </a>
-
-                <a
-                    href="{% url 'genres:genres-list' %}"
-                    class="group border-y border-slate-800 bg-slate-950 p-5 transition hover:bg-slate-900 sm:border-x sm:border-y-0"
-                >
-                    <span class="text-[10px] font-semibold tracking-widest text-cyan-400">
-                        02
-                    </span>
-
-                    <h3 class="mt-5 font-semibold text-white">Genres</h3>
-
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
-                        Explore the categories behind each game.
-                    </p>
-
-                    <span class="mt-5 inline-block text-sm text-slate-600 transition group-hover:translate-x-1 group-hover:text-cyan-300">
-                        →
-                    </span>
-                </a>
-
-                <a
-                    href="{% url 'publishers:publishers-list' %}"
-                    class="group bg-slate-950 p-5 transition hover:bg-slate-900"
-                >
-                    <span class="text-[10px] font-semibold tracking-widest text-cyan-400">
-                        03
-                    </span>
-
-                    <h3 class="mt-5 font-semibold text-white">Publishers</h3>
-
-                    <p class="mt-2 text-sm leading-6 text-slate-500">
-                        Meet the companies behind the collection.
-                    </p>
-
-                    <span class="mt-5 inline-block text-sm text-slate-600 transition group-hover:translate-x-1 group-hover:text-cyan-300">
-                        →
-                    </span>
-                </a>
             </div>
         </div>
     </section>

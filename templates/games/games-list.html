@@ -1,187 +1,189 @@
 {% extends "base.html" %}
-
 {% block title %}
-    Games | Games Library
+    Browse Games
 {% endblock title %}
-
-{% block meta_description %}
-    Browse and filter all games in the Games Library.
-{% endblock meta_description %}
-
 {% block content %}
-    <section>
-        <div class="flex flex-wrap items-end justify-between gap-5">
-            <div>
-                <p class="text-[11px] font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-                    Collection
-                </p>
-
-                <h1 class="mt-2 text-3xl font-semibold tracking-tight text-white">
-                    Games
+    <form method="get">
+        <!-- TOP SECTION -->
+        <section class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between max-w-[98rem] w-full mx-auto px-6 sm:px-10 mb-20">
+            <!-- HEADER -->
+            <div class="w-full lg:w-2/6">
+                <div class="flex items-center gap-4">
+                    <span class="w-8 h-1 bg-cyan-400 rounded-2xl"></span>
+                    <p class="text-sm sm:text-base uppercase tracking-tight text-slate-400">Your collection</p>
+                </div>
+                <!-- LOGO -->
+                <h1 class="flex uppercase text-3xl sm:text-7xl tracking-tight gap-4">
+                    <span class="text-white font-bold">Games</span>
+                    <span class="text-cyan-400 font-bold">library</span>
                 </h1>
-
-                <p class="mt-3 text-slate-400">
-                    Search, filter and explore the complete library.
-                </p>
             </div>
-
-            <a
-                href="{% url 'games:game-create' %}"
-                class="rounded-xl bg-cyan-300 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
-            >
-                Add game
-            </a>
-        </div>
-
-        <form
-            method="get"
-            class="mt-8 grid gap-4 rounded-2xl border border-slate-800/80 bg-slate-900/60 p-5 shadow-xl shadow-slate-950/20 md:grid-cols-2 xl:grid-cols-5"
-        >
-            <div class="xl:col-span-2">
-                <label
-                    for="search"
-                    class="mb-2 block text-sm font-medium text-slate-300"
-                >
-                    Search
-                </label>
-
-                <input
-                    id="search"
-                    type="search"
-                    name="q"
-                    value="{{ search_query }}"
-                    placeholder="Search by title or description"
-                    class="w-full rounded-xl border border-slate-700/80 bg-slate-950/80 px-3.5 py-2.5 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/10"
-                >
+            <!-- SEARCH AND SORT -->
+            <div class="flex flex-col gap-4 py-2 w-full sm:flex-row sm:items-center sm:gap-5 lg:w-4/6 lg:justify-end lg:self-end">
+                <!-- SEARCH BAR -->
+                <div class="flex w-full sm:flex-1 lg:flex-none lg:w-1/3 gap-2 items-center">
+                    <input type="search"
+                           name="q"
+                           id="search"
+                           value="{{ search_query }}"
+                           placeholder="🔍 Search your collection..."
+                           class="min-w-0 flex-1 h-9 border-2 border-slate-600 rounded-lg px-2 py-1 text-slate-200 bg-slate-800/40 focus:bg-slate-900 focus:border-cyan-400 placeholder:text-slate-300 outline-none transition-all">
+                    <button type="submit"
+                            class="h-9 shrink-0 border-2 border-slate-50/0 bg-cyan-400 rounded-lg text-slate-950 px-2 font-semibold hover:bg-cyan-300">Search</button>
+                </div>
+                <!-- SORT BAR -->
+                <div class="flex w-full items-center gap-2 sm:w-auto">
+                    <label for="sort" class="shrink-0 text-slate-200">Sort by</label>
+                    <select name="sort"
+                            id="sort"
+                            class="flex-1 sm:flex-none sm:w-40 h-9 text-center bg-slate-800/70 border-2 border-slate-600 rounded-lg text-slate-200 outline-none focus:border-cyan-400 transition-colors">
+                        <option value="name" {% if selected_sort == "name" %}selected{% endif %}>Name A-Z</option>
+                        <option value="-name" {% if selected_sort == "-name" %}selected{% endif %}>Name Z-A</option>
+                        <option value="rating"
+                                {% if selected_sort == "rating" %}selected{% endif %}>Lowest Rating</option>
+                        <option value="-rating"
+                                {% if selected_sort == "-rating" %}selected{% endif %}>Highest Rating</option>
+                        <option value="release_date"
+                                {% if selected_sort == "release_date" %}selected{% endif %}>Oldest released</option>
+                        <option value="-release_date"
+                                {% if selected_sort == "-release_date" %}selected{% endif %}>Newest released</option>
+                    </select>
+                    <button type="submit"
+                            class="h-9 shrink-0 border-2 border-slate-50/0 bg-cyan-400 rounded-lg text-slate-950 px-2 font-semibold hover:bg-cyan-300">Sort</button>
+                </div>
             </div>
-
-            <div>
-                <label
-                    for="genre"
-                    class="mb-2 block text-sm font-medium text-slate-300"
-                >
-                    Genre
-                </label>
-
-                <select
-                    id="genre"
-                    name="genre"
-                    class="w-full rounded-xl border border-slate-700/80 bg-slate-950/80 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/10"
-                >
-                    <option value="">All genres</option>
-
-                    {% for genre in genres %}
-                        <option
-                            value="{{ genre.pk }}"
-                            {% if selected_genre == genre.pk|stringformat:"s" %}selected{% endif %}
-                        >
-                            {{ genre.name }}
-                        </option>
+        </section>
+        <!-- MAIN SECTION -->
+        <section class="flex flex-col lg:flex-row w-full gap-6 max-w-[98rem] mx-auto px-6">
+            <!-- FILTERS -->
+            <div class="w-full lg:basis-1/4 lg:shrink-0 self-start p-6 flex flex-col border-2 border-slate-600 rounded-xl">
+                <!-- GENRES -->
+                <div class="w-full flex flex-col">
+                    <h2 class="uppercase text-slate-400 font-semibold text-center">Genres</h2>
+                    <!-- GENRES LIST -->
+                    <div class="flex flex-col my-4">
+                        {% for genre in genres %}
+                            <!-- GENRE TAGS -->
+                            <div class="flex w-full items-center justify-between py-2">
+                                <!-- LEFT SIDE -->
+                                <div class="flex items-center gap-4">
+                                    <input type="checkbox"
+                                           name="genre"
+                                           id="genre-{{ genre.pk }}"
+                                           value="{{ genre.pk }}"
+                                           class="accent-cyan-400"
+                                           {% if genre.pk|stringformat:"s" in selected_genres %}checked{% endif %}>
+                                    <label for="genre-{{ genre.pk }}" class="text-slate-200">{{ genre.name }}</label>
+                                </div>
+                                <!-- COUNTER -->
+                                {% if genre.games.count %}
+                                    <span class="w-8 text-right text-slate-200 font-semibold">{{ genre.games.count }}</span>
+                                {% else %}
+                                    <span class="w-8 text-right text-slate-400">{{ genre.games.count }}</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- DIVIDER -->
+                <div class="w-full border-t border-slate-700 m-4"></div>
+                <!-- PUBLISHERS -->
+                <div class="w-full flex flex-col">
+                    <h2 class="uppercase text-slate-400 font-semibold text-center">Publishers</h2>
+                    <!-- PUBLISHER LIST -->
+                    <div class="flex flex-col my-4">
+                        {% for publisher in publishers %}
+                            <div class="flex w-full items-center justify-between py-2">
+                                <div class="flex items-center gap-4">
+                                    <input type="checkbox"
+                                           name="publisher"
+                                           id="publisher-{{ publisher.pk }}"
+                                           value="{{ publisher.pk }}"
+                                           class="accent-cyan-400"
+                                           {% if publisher.pk|stringformat:"s" in selected_publishers %}checked{% endif %}>
+                                    <label for="publisher-{{ publisher.pk }}"
+                                           class="text-slate-200">{{ publisher.name }}</label>
+                                </div>
+                                <!-- COUNTER -->
+                                {% if publisher.games.count %}
+                                    <span class="w-8 text-right text-slate-200 font-semibold">{{ publisher.games.count }}</span>
+                                {% else %}
+                                    <span class="w-8 text-right text-slate-400">{{ publisher.games.count }}</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- FILTER BUTTONS -->
+                <div class="flex w-full text-center gap-2 justify-center">
+                    <!-- APPLY -->
+                    <button type="submit"
+                            class="border-2 border-slate-50/0 bg-cyan-400 text-slate-900 rounded-lg px-4 py-2 hover:bg-slate-600/70 hover:border-2 hover:border-slate-200 hover:text-slate-200">Apply Filters</button>
+                    <!-- CLEAR -->
+                    <a href="{% url "games:games-list" %}"
+                       class="inline-block border-2 border-cyan-400 text-cyan-400 rounded-lg px-4 py-2 hover:bg-cyan-400 hover:text-black">Clear Filters</a>
+                </div>
+            </div>
+            <!-- GAMES -->
+            <div class="w-full lg:flex-1">
+                <!-- TOP SECTION -->
+                <div class="flex flex-row gap-1">
+                    {% if games_list %}
+                        <p class="font-bold">{{ games_list|length }}</p>
+                        <span>games found</span>
+                    {% else %}
+                        <p>0 games found</p>
+                    {% endif %}
+                </div>
+                <!-- GRID -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mt-4">
+                    <!-- GAME  -->
+                    {% for game in games_list %}
+                        <article class="relative border border-slate-600 bg-slate-800/60 rounded-lg overflow-hidden group">
+                            <img src="{{ game.cover_url }}"
+                                 alt="{{ game.name }}"
+                                 class="w-full h-64 object-cover">
+                            <!-- RATING -->
+                            <div class="absolute top-3 right-3 z-10 transition-opacity duration-500 group-hover:opacity-0">
+                                {% if game.rating is not None %}
+                                    <p class="rounded-lg border border-white/20 bg-slate-950/80 px-2 py-1 text-sm font-semibold text-white">☆ {{ game.rating }}</p>
+                                {% else %}
+                                    <p class="text-slate-400">N/A</p>
+                                {% endif %}
+                            </div>
+                            <!-- GAME CARD -->
+                            <div class="absolute p-4 inset-0 opacity-0 group-hover:opacity-100 transition-all text-center group-hover:backdrop-blur-xs translate-y-full group-hover:translate-y-0 group-hover:bg-slate-800/40 duration-500">
+                                <!-- NAME AND PUBLISHER -->
+                                <div class="flex justify-between">
+                                    <a href="{% url "games:game-details" game.pk %}" class="block">
+                                        <h3 class="text-slate-200 font-bold hover:text-cyan-400">{{ game.name }}</h3>
+                                    </a>
+                                    {% if game.publisher is not None %}
+                                        <a href="{% url "publishers:publisher-details" game.publisher.pk %}"
+                                           class="block">
+                                            <p class="text-start text-slate-200 font-bold hover:text-cyan-400">{{ game.publisher.name }}</p>
+                                        </a>
+                                    {% else %}
+                                        <p>No publisher added</p>
+                                    {% endif %}
+                                </div>
+                                <!-- DESCRIPTION -->
+                                <div class="inline-block">
+                                    <p class="py-6 text-slate-300 text-sm">{{ game.description|truncatechars:100 }}</p>
+                                </div>
+                                <!-- GENRES -->
+                                <div class="flex gap-2 flex-wrap">
+                                    {% for genre in game.genres.all %}
+                                        <a href="{% url "genres:genre-details" genre.pk %}">
+                                            <p class="border border-cyan-400 rounded-lg text-slate-400 font-semibold px-2 hover:text-black hover:bg-cyan-400">{{ genre.name }}</p>
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </article>
                     {% endfor %}
-                </select>
+                </div>
             </div>
-
-            <div>
-                <label
-                    for="publisher"
-                    class="mb-2 block text-sm font-medium text-slate-300"
-                >
-                    Publisher
-                </label>
-
-                <select
-                    id="publisher"
-                    name="publisher"
-                    class="w-full rounded-xl border border-slate-700/80 bg-slate-950/80 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/10"
-                >
-                    <option value="">All publishers</option>
-
-                    {% for publisher in publishers %}
-                        <option
-                            value="{{ publisher.pk }}"
-                            {% if selected_publisher == publisher.pk|stringformat:"s" %}selected{% endif %}
-                        >
-                            {{ publisher.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div>
-                <label
-                    for="sort"
-                    class="mb-2 block text-sm font-medium text-slate-300"
-                >
-                    Sort
-                </label>
-
-                <select
-                    id="sort"
-                    name="sort"
-                    class="w-full rounded-xl border border-slate-700/80 bg-slate-950/80 px-3.5 py-2.5 text-sm text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/10"
-                >
-                    <option value="name" {% if selected_sort == "name" %}selected{% endif %}>
-                        Name A–Z
-                    </option>
-
-                    <option value="-name" {% if selected_sort == "-name" %}selected{% endif %}>
-                        Name Z–A
-                    </option>
-
-                    <option value="-rating" {% if selected_sort == "-rating" %}selected{% endif %}>
-                        Highest rating
-                    </option>
-
-                    <option value="-release_date" {% if selected_sort == "-release_date" %}selected{% endif %}>
-                        Newest release
-                    </option>
-
-                    <option value="release_date" {% if selected_sort == "release_date" %}selected{% endif %}>
-                        Oldest release
-                    </option>
-                </select>
-            </div>
-
-            <div class="flex flex-wrap gap-3 md:col-span-2 xl:col-span-5">
-                <button
-                    type="submit"
-                    class="rounded-xl bg-cyan-300 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
-                >
-                    Apply filters
-                </button>
-
-                <a
-                    href="{% url 'games:games-list' %}"
-                    class="rounded-xl border border-slate-700 px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:border-slate-500 hover:text-white"
-                >
-                    Clear
-                </a>
-            </div>
-        </form>
-
-        <div class="mt-8 flex items-center justify-between">
-            <p class="text-sm text-slate-400">
-                {{ games_list|length }}
-                result{{ games_list|length|pluralize }}
-            </p>
-        </div>
-
-        {% if games_list %}
-            <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {% for game in games_list %}
-                    {% include "partials/game-card.html" with game=game %}
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="mt-6 rounded-2xl border border-dashed border-slate-700 bg-slate-900/50 px-6 py-14 text-center">
-                <h2 class="text-xl font-semibold text-white">
-                    No games found
-                </h2>
-
-                <p class="mt-2 text-slate-400">
-                    Try changing the filters or add a new game.
-                </p>
-            </div>
-        {% endif %}
-    </section>
+        </section>
+    </form>
 {% endblock content %}

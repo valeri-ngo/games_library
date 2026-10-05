@@ -1,92 +1,169 @@
-# Games Library
+<div align="center">
+
+# 🎮 Games Library
+
+### Django application for managing a personal video game collection
+
+**Django 6.1.1 · PostgreSQL · Tailwind CSS 4 · Django Templates**
+
+</div>
+
+---
 
 <p align="center">
   <img src="docs/screenshots/home.png" alt="Games Library home page">
 </p>
 
-## Български
+## About
 
-**Games Library** е Django уеб приложение за създаване и управление на лична колекция от игри.
+**Games Library** is a Django web application for creating and managing a personal collection of video games.
 
-Работният процес е прост:
+Games can include a description, publisher, genres, release date, rating, and cover image. Publishers and genres are optional, allowing games to be created independently.
 
-**Жанрове → Издатели → Игри → Търсене / Филтриране / Сортиране**
+The interface is responsive and uses a dark gaming-inspired design built with Tailwind CSS.
 
-Първо се създават жанровете и издателите, а след това игрите се свързват с тях. За всяка игра могат да се добавят описание, дата на издаване, рейтинг и URL към изображение.
+## Features
 
-### Основни възможности
+- CRUD operations for games, genres, and publishers
+- Search games by name or description
+- Filter by genre and publisher
+- Sort by name, rating, and release date
+- Optional publisher and genres
+- Rating validation from `0` to `10`
+- Publisher deletion protection with `PROTECT`
+- Responsive interface
+- Custom `404` and `500` pages
+- Django Admin with Django Unfold
 
-- CRUD операции за игри, жанрове и издатели
-- търсене на игри по име и описание
-- филтриране по жанр и издател
-- сортиране по име, рейтинг и дата на издаване
-- детайлни страници за всички основни обекти
-- custom 404 и 500 страници
-- responsive интерфейс с Tailwind CSS
-- PostgreSQL база данни
+## Preview
 
-## Преглед
-
-| Игри | Добавяне на игра |
+| Games | Add Game |
 | --- | --- |
-| ![Games](docs/screenshots/games.png) | ![Add Game](docs/screenshots/add-game.png) |
+| ![Games](docs/screenshots/games-list.png) | ![Add Game](docs/screenshots/game-add.png) |
 
-| Жанрове | Издатели |
+| Game-details |
 | --- | --- |
-| ![Genres](docs/screenshots/genres.png) | ![Publishers](docs/screenshots/publishers.png) |
+| ![Game-details](docs/screenshots/game-details.png) |
 
----
+| Genres | Publishers |
+| --- | --- |
+| ![Genres](docs/screenshots/genres.png) | ![Publishers](docs/screenshots/publishers-list.png) |
 
-## English
+## Data Model
 
-**Games Library** is a Django web application for creating and managing a personal game collection.
+The project contains three main models:
 
-The workflow is:
+- **Game** — name, description, publisher, genres, release date, rating, and cover URL
+- **Genre** — reusable genre information connected to multiple games
+- **Publisher** — country, founding year, website, and related games
 
-**Genres → Publishers → Games → Search / Filter / Sort**
+Shared fields such as `name`, `description`, `created_at`, and `updated_at` are provided through an abstract `CommonModel`.
 
-Genres and publishers are created first, then games are connected to them and can include a description, release date, rating and cover image URL.
+```text
+Publisher  1 ──────── *  Game
+                optional FK
 
-### Main features
-
-- CRUD for games, genres and publishers
-- search, filtering and sorting
-- detail pages for all main entities
-- custom 404 and 500 pages
-- responsive Tailwind CSS interface
-- PostgreSQL database
+Genre      * ──────── *  Game
+                optional M2M
+```
 
 ## Technologies
 
-**Python · Django · PostgreSQL · Tailwind CSS · Django Templates**
+| Area | Technology |
+| --- | --- |
+| Backend | Python 3.14, Django 6.1.1 |
+| Database | PostgreSQL |
+| Frontend | Django Templates |
+| Styling | Tailwind CSS 4 |
+| Admin | Django Admin + Django Unfold |
+| Environment | python-dotenv |
+| Code quality | Ruff |
 
-## Local setup
+## Local Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/valeri-ngo/games_library.git
+cd games_library
+```
+
+### 2. Create and activate a virtual environment
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
 pip install -r requirements.txt
 npm install
 ```
+
+### 4. Configure environment variables
 
 Create a `.env` file:
 
 ```env
 SECRET_KEY=your-secret-key
-DEBUG=True
-ALLOWED_HOSTS=127.0.0.1,localhost
 
-DB_NAME=your-database
-DB_USER=your-user
+DB_NAME=games_library
+DB_USER=postgres
 DB_PASS=your-password
 DB_HOST=localhost
 DB_PORT=5432
 ```
 
-Then run:
+### 5. Apply migrations
 
 ```bash
 python manage.py migrate
+```
+
+### 6. Build Tailwind CSS
+
+```bash
 npm run build:css
+```
+
+For development:
+
+```bash
+npm run dev:css
+```
+
+### 7. Start the server
+
+```bash
 python manage.py runserver
 ```
+
+Open:
+
+```text
+http://127.0.0.1:8000/
+```
+
+## Django Admin
+
+Create an administrator:
+
+```bash
+python manage.py createsuperuser
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8000/admin/
+```
+
+---
+
+<div align="center">
+
+### Built with Django, PostgreSQL and Tailwind CSS
+
+</div>
