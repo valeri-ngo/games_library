@@ -42,7 +42,7 @@ The interface is responsive and uses a dark gaming-inspired design built with Ta
 | ![Games](docs/screenshots/games-list.png) | ![Add Game](docs/screenshots/game-add.png) |
 
 | Game-details |
-| --- | --- |
+| --- |
 | ![Game-details](docs/screenshots/game-details.png) |
 
 | Genres | Publishers |
