@@ -20,7 +20,7 @@
 
 Games can include a description, publisher, genres, release date, rating, and cover image. Publishers and genres are optional, allowing games to be created independently.
 
-The interface is responsive and uses a dark gaming-inspired design built with Tailwind CSS.
+The application uses a responsive dark interface built with Tailwind CSS.
 
 ## Features
 
@@ -41,9 +41,9 @@ The interface is responsive and uses a dark gaming-inspired design built with Ta
 | --- | --- |
 | ![Games](docs/screenshots/games-list.png) | ![Add Game](docs/screenshots/game-add.png) |
 
-| Game-details |
+| Game Details |
 | --- |
-| ![Game-details](docs/screenshots/game-details.png) |
+| ![Game Details](docs/screenshots/game-details.png) |
 
 | Genres | Publishers |
 | --- | --- |
@@ -57,7 +57,7 @@ The project contains three main models:
 - **Genre** — reusable genre information connected to multiple games
 - **Publisher** — country, founding year, website, and related games
 
-Shared fields such as `name`, `description`, `created_at`, and `updated_at` are provided through an abstract `CommonModel`.
+Shared fields such as `name`, `description`, `created_at`, and `updated_at` are provided through the abstract `CommonModel`.
 
 ```text
 Publisher  1 ──────── *  Game
@@ -73,11 +73,24 @@ Genre      * ──────── *  Game
 | --- | --- |
 | Backend | Python 3.14, Django 6.1.1 |
 | Database | PostgreSQL |
-| Frontend | Django Templates |
+| Frontend | Django Templates / HTML |
 | Styling | Tailwind CSS 4 |
 | Admin | Django Admin + Django Unfold |
 | Environment | python-dotenv |
 | Code quality | Ruff |
+
+## Project Structure
+
+```text
+games_library/
+├── common/        # Shared logic and home page
+├── games/         # Games CRUD
+├── genres/        # Genres CRUD
+├── publishers/    # Publishers CRUD
+├── templates/     # Templates and reusable partials
+├── static/        # Tailwind CSS and static assets
+└── games_library/ # Django project configuration
+```
 
 ## Local Setup
 
@@ -102,12 +115,23 @@ pip install -r requirements.txt
 npm install
 ```
 
-### 4. Configure environment variables
+### 4. Create the PostgreSQL database
 
-Create a `.env` file:
+Create an empty PostgreSQL database for the project.
+
+Example:
+
+```text
+games_library
+```
+
+### 5. Configure environment variables
+
+Create a `.env` file in the project root:
 
 ```env
 SECRET_KEY=your-secret-key
+DEBUG=True
 
 DB_NAME=games_library
 DB_USER=postgres
@@ -116,17 +140,15 @@ DB_HOST=localhost
 DB_PORT=5432
 ```
 
-### 5. Apply migrations
+### 6. Apply migrations
 
 ```bash
 python manage.py migrate
 ```
 
-### 6. Build Tailwind CSS
+The project starts with an empty library. Games, genres, and publishers can be added through the application or Django Admin.
 
-```bash
-npm run build:css
-```
+### 7. Build Tailwind CSS
 
 For development:
 
@@ -134,7 +156,13 @@ For development:
 npm run dev:css
 ```
 
-### 7. Start the server
+For a production/minified build:
+
+```bash
+npm run build:css
+```
+
+### 8. Start the development server
 
 ```bash
 python manage.py runserver
@@ -148,7 +176,7 @@ http://127.0.0.1:8000/
 
 ## Django Admin
 
-Create an administrator:
+Create an administrator account:
 
 ```bash
 python manage.py createsuperuser
